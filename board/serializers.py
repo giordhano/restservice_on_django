@@ -15,11 +15,11 @@ class UserSerializer(serializers.ModelSerializer):
 
 class sprintSerializer(serializers.ModelSerializer):
 
-    links = serializers.SerializerMethodField('get_links')
+    links = serializers.SerializerMethodField()
 
     class Meta:
         model = Sprint
-        fields = ('id','name','description','end',)
+        fields = ('id','name','description','end','links',)
 
     def get_links(self, obj):
         request = self.context['request']
@@ -33,21 +33,21 @@ class taskSerializer(serializers.ModelSerializer):
     assigned = serializers.SlugRelatedField(
         slug_field = User.USERNAME_FIELD, required  = False, read_only = True)
 
-    status_display = serializers.SerializerMethodField('get_status_display')
+    status_display = serializers.SerializerMethodField()
 
-    links = serializers.SerializerMethodField('get_links')
+    links = serializers.SerializerMethodField()
 
     class Meta:
         model = Task
-        fields = ('id', 'name', 'description', 'sprint', 'status', 'order', 'assigned','started','due','completed', )
+        fields = ('id', 'name', 'description', 'sprint', 'status', 'order', 'assigned','started','due','completed', 'links', 'status_display', )
 
-    def get_status_display(self, obj):
+    def get_status_display(self,obj):
         return obj.get_status_display()
 
     def get_links(self,obj):
         request = self.context['request']
         links = {
-            'self' : reverse('task_detail', kwargs = {'pk' : obj.pk}, request = request ),
+            'self' : reverse('task-detail', kwargs = {'pk' : obj.pk}, request = request ),
             'sprint' : None,
             'assigned' : None
         }

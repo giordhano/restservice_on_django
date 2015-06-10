@@ -27,6 +27,7 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
+# Application definition
 
 
 INSTALLED_APPS = (
@@ -39,6 +40,16 @@ INSTALLED_APPS = (
     #Internal apps
     'board',
 )
+
+
+REST_FRAMEWORK = {
+    # Use Django's standard `django.contrib.auth` permissions,
+    # or allow read-only access for unauthenticated users.
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly'
+    ]
+}
+
 
 MIDDLEWARE_CLASSES = (
     'django.middleware.common.CommonMiddleware',
